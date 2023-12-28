@@ -28,15 +28,15 @@ void token_debug(Token *token);
 
 [ \t\n]+        { /* Skip whitespace. */ }
 
-[0-9]+ {
+-?[0-9]+ {
   APPEND(TOKEN_INTEGER)
 }
 
-[0-9]+\.[0-9]+ {
+-?[0-9]+\.[0-9]+ {
   APPEND(TOKEN_FLOAT)
 }
 
-\.[0-9]+ {
+-?\.[0-9]+ {
   APPEND(TOKEN_FLOAT)
 }
 
