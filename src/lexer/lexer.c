@@ -6,6 +6,8 @@ extern int yylex(void);
 extern int yy_scan_string(char *str);
 
 Token **lex(char *input) {
+  free_tokens();
+  tokens = malloc(sizeof(Token *));
   yy_scan_string(input);
   yylex();
   return tokens;
