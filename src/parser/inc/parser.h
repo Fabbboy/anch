@@ -1,32 +1,38 @@
 #include "../../lexer/inc/token.h"
 #include "../../lexer/inc/token_t.h"
+#include "expression.h"
 #include "statement.h"
 #include <memory>
 #include <vector>
+#include "module.h"
 
-class Module {
-public:
-  Module() {};
-  ~Module() = default;
 
-  void add_statement(std::shared_ptr<Statement> statement) {
-    this->statements.push_back(std::move(statement));
-  }
-
-private:
-  std::vector<std::shared_ptr<Statement>> statements;
-};
+#define NUMBER_TOKENS Token_t::TOKEN_FLOAT, Token_t::TOKEN_INTEGER, Token_t::TOKEN_HEX 
 
 class Parser {
 public:
   Parser(Token **tokens, size_t tokens_size)
-      : first_tokens(tokens), tokens_size(tokens_size), p_module() {}
+      : tokens_size(tokens_size), p_module() {
+
+    this->tokens.reserve(tokens_size);
+    for (size_t i = 0; i < tokens_size; i++) {
+      this->tokens.push_back(tokens[i]);
+    }
+    free(tokens);
+  }
   ~Parser() = default;
 
   Module parse();
 
 private:
   Module p_module;
-  Token **first_tokens;
+  std::vector<Token *> tokens;
   size_t tokens_size;
+
+  int index = 0;
+
+  Token* next(std::vector<Token_t> expected, std::vector<std::string> expected_values = {}); 
+  bool peek(std::vector<Token_t> expected, std::vector<std::string> expected_values = {});
+
+  std::unique_ptr<Expression> next_expression();
 };

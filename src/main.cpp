@@ -1,7 +1,7 @@
 #include <iostream>
 #include "lexer/inc/lexer.h"
+#include "parser/inc/parser.h"
 #include <fstream>
-
 #define TESTING 0
 
 #define READ_CONTENTS(FILE_PATH) std::ifstream file(FILE_PATH); \
@@ -24,9 +24,15 @@ int main() {
     char* input_c = (char*)contents.c_str();
     Token** tokens = lex(input_c);
 
-    for (int i = 0; i < token_count; i++) {
-      token_debug(tokens[i]);
+    for (int i = 0; token_count > i; i++) {
+     token_debug(tokens[i]);
     }
+
+    std::cout << "==== Parsing: " << tests[i] << " ====" << std::endl;
+
+    Parser parser(tokens, token_count);
+    Module module = parser.parse();
+
   }
   return 0;
 }
