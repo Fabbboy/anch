@@ -18,6 +18,9 @@ Token** lex(char *input);
 extern Token** tokens;
 extern int token_count;
 
+#define APPEND(TYPE) Token *token = token_new(yytext, TYPE); \
+  append_token(token);
+
 #ifdef __cplusplus
 }
 #endif
