@@ -8,6 +8,8 @@ char *token_to_string(Token_t type) {
     return "FLOAT";
   case TOKEN_HEX:
     return "HEX";
+  case TOKEN_OPERATOR:
+    return "OPERATOR";
   default:
     return "UNKNOWN";
   }

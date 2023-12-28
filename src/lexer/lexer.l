@@ -7,6 +7,8 @@
   TOKEN_INTEGER,
   TOKEN_FLOAT,
   TOKEN_HEX,
+
+  TOKEN_OPERATOR,
 } Token_t;
   */
 
@@ -48,24 +50,33 @@ Token** lex(char *input) {
   yylex();
   return tokens;
 }
+
+#define APPEND(TYPE) Token *token = token_new(yytext, TYPE); \
+  append_token(token);
 %}
+
 
 %%
 
 [ \t\n]+        { /* Skip whitespace. */ }
 
 [0-9]+ {
-  Token *token = token_new(yytext, TOKEN_INTEGER);
-  append_token(token);
+  APPEND(TOKEN_INTEGER)
 }
 
 [0-9]+\.[0-9]+ {
-  Token *token = token_new(yytext, TOKEN_FLOAT);
-  append_token(token);
+  APPEND(TOKEN_FLOAT)
+}
+
+\.[0-9]+ {
+  APPEND(TOKEN_FLOAT)
 }
 
 0x[0-9a-fA-F]+ {
-  Token *token = token_new(yytext, TOKEN_HEX);
-  append_token(token);
+  APPEND(TOKEN_HEX)
+}
+
+[+\-*/%] {
+  APPEND(TOKEN_OPERATOR)
 }
 %%
