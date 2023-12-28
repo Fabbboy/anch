@@ -6,14 +6,14 @@ Token *token_new(char *value, Token_t type) {
   token->value = strdup(value); // Copy the string to ensure it's persistent.
   token->type = type;
   return token;
-};
+}
 
 
 void token_free(Token *token) {
   free(token->value);
   free(token);
-};
+}
 
 void token_debug(Token *token) {
   printf("%s {%s}\n", token_to_string(token->type), token->value);
-};
+}

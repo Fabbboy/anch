@@ -3,8 +3,8 @@
 
 int main() {
   std::string input = R"(21
-   23
-    12)";
+   23.4
+    0x03)";
   char* input_c = (char*)input.c_str();
   Token** tokens = lex(input_c);
 
