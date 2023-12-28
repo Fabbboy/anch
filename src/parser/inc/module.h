@@ -14,6 +14,7 @@ public:
     this->statements.push_back(std::move(statement));
   }
 
-private:
+  void clear() { this->statements.clear(); }
+
   std::vector<std::shared_ptr<Statement>> statements;
 };

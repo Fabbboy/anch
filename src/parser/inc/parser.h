@@ -18,7 +18,6 @@ public:
     for (size_t i = 0; i < tokens_size; i++) {
       this->tokens.push_back(tokens[i]);
     }
-    free(tokens);
   }
   ~Parser() = default;
 
@@ -35,4 +34,5 @@ private:
   bool peek(std::vector<Token_t> expected, std::vector<std::string> expected_values = {});
 
   std::unique_ptr<Expression> next_expression();
+  std::unique_ptr<Expression> parse_expression();
 };

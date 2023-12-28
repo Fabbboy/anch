@@ -5,18 +5,81 @@
 #include <iostream>
 #include <stdexcept>
 
+// VALUES
+#include "expressions/values/float_value.h"
+#include "expressions/values/int_value.h"
+// OPERATORS
+#include "expressions/operators/add_expr.h"
+#include "expressions/operators/div_expr.h"
+#include "expressions/operators/mul_expr.h"
+#include "expressions/operators/sub_expr.h"
+#include "expressions/operators/mod_expr.h"
+
 Module Parser::parse() {
   while (index < tokens_size) {
-    Token *result = next({Token_t::TOKEN_FLOAT, Token_t::TOKEN_INTEGER,
-                          Token_t::TOKEN_HEX, Token_t::TOKEN_OPERATOR});
-    std::cout << result->value << std::endl;
+    // TODO: change
+    std::unique_ptr<Expression> expr = parse_expression();
+    std::cout << expr->format() << std::endl;
+    delete expr.release();
   }
 
+
+  this->tokens_size = 0;
+  this->tokens.clear();
+  this->index = 0;
   return this->p_module;
 }
 
+std::unique_ptr<Expression> Parser::parse_expression() {
+  std::unique_ptr<Expression> expr = next_expression();
+
+  while (peek({Token_t::TOKEN_OPERATOR})) {
+    Token *token = next({Token_t::TOKEN_OPERATOR});
+
+    switch (token->value[0]) {
+    case '+':
+      expr =
+          std::make_unique<AddExpression>(std::move(expr), next_expression());
+      break;
+    case '-':
+      expr =
+          std::make_unique<SubExpression>(std::move(expr), next_expression());
+      break;
+    case '*':
+      expr =
+          std::make_unique<MulExpression>(std::move(expr), next_expression());
+      break;
+    case '/':
+      expr =
+          std::make_unique<DivExpression>(std::move(expr), next_expression());
+      break;
+    case '%':
+      expr =
+          std::make_unique<ModExpression>(std::move(expr), next_expression());
+          break;
+    default:
+      std::string msg = "Unexpected operator: ";
+      msg += token->value;
+      throw std::runtime_error(msg);
+    }
+  }
+
+  return expr;
+}
+
 std::unique_ptr<Expression> Parser::next_expression() {
-  Token *token = next({NUMBER_TOKENS, Token_t::TOKEN_OPERATOR});
+  Token *token = next({NUMBER_TOKENS});
+
+  switch (token->type) {
+  case TOKEN_INTEGER:
+    return std::make_unique<IntValue>(std::stoi(token->value));
+  case TOKEN_FLOAT:
+    return std::make_unique<FloatValue>(std::stof(token->value));
+  case TOKEN_HEX:
+    return std::make_unique<IntValue>(std::stoi(token->value, nullptr, 16));
+  default:
+    throw std::runtime_error("Unexpected token");
+  }
 
   throw std::runtime_error("Unexpected token");
 }
