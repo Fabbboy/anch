@@ -16,6 +16,7 @@
 #include "expressions/operators/mod_expr.h"
 
 Module Parser::parse() {
+  Module module;
   while (index < tokens_size) {
     // TODO: change
     std::unique_ptr<Expression> expr = parse_expression();
@@ -27,7 +28,7 @@ Module Parser::parse() {
   this->tokens_size = 0;
   this->tokens.clear();
   this->index = 0;
-  return this->p_module;
+  return module;
 }
 
 std::unique_ptr<Expression> Parser::parse_expression() {

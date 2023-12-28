@@ -12,7 +12,7 @@
 class Parser {
 public:
   Parser(Token **tokens, size_t tokens_size)
-      : tokens_size(tokens_size), p_module() {
+      : tokens_size(tokens_size) {
 
     this->tokens.reserve(tokens_size);
     for (size_t i = 0; i < tokens_size; i++) {
@@ -24,7 +24,6 @@ public:
   Module parse();
 
 private:
-  Module p_module;
   std::vector<Token *> tokens;
   size_t tokens_size;
 

@@ -10,6 +10,8 @@ static std::string tests[] = {
     "tests/simple/simple_op.anch",
 };
 int main() {
+  int success = 0;
+  int total = sizeof(tests) / sizeof(tests[0]);
   for (int i = 0; i < sizeof(tests) / sizeof(tests[0]); i++) {
     std::cout << "==== Testing: " << tests[i] << " ====" << std::endl;
     std::ifstream file(tests[i]);
@@ -30,7 +32,14 @@ int main() {
 
     Parser parser(tokens, token_count);
     Module module = parser.parse();
+    success++;
   }
+
+  std::cout << "==== Results ====" << std::endl;
+  std::cout << "Success: " << success << std::endl;
+  std::cout << "Total: " << total << std::endl;
+  std::cout << "Percentage: " << (success / total) * 100 << "%" << std::endl;
+
   return 0;
 }
 #else
