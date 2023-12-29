@@ -8,6 +8,7 @@
   TOKEN_HEX,
 
   TOKEN_OPERATOR,
+  TOKEN_BRACKETS
 } Token_t;
   */
 
@@ -28,15 +29,15 @@ void token_debug(Token *token);
 
 [ \t\n]+        { /* Skip whitespace. */ }
 
-[0-9]+ {
+[+-]?[0-9]+ {
   APPEND(TOKEN_INTEGER)
 }
 
-[0-9]+\.[0-9]+ {
+[+-]?[0-9]+\.[0-9]+ {
   APPEND(TOKEN_FLOAT)
 }
 
-\.[0-9]+ {
+[+-]?\.[0-9]+ {
   APPEND(TOKEN_FLOAT)
 }
 
@@ -46,5 +47,9 @@ void token_debug(Token *token);
 
 [+\-*/%] {
   APPEND(TOKEN_OPERATOR)
+}
+
+[\(\)\[\]\{\}] {
+  APPEND(TOKEN_BRACKETS)
 }
 %%

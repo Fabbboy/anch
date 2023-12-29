@@ -10,6 +10,8 @@ char *token_to_string(Token_t type) {
     return "HEX";
   case TOKEN_OPERATOR:
     return "OPERATOR";
+  case TOKEN_BRACKETS:
+    return "BRACKETS";
   default:
     return "UNKNOWN";
   }
