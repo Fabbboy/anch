@@ -34,4 +34,6 @@ private:
 
   std::unique_ptr<Expression> next_expression();
   std::unique_ptr<Expression> parse_expression();
+  int get_precedence(char op);
+  std::unique_ptr<Expression> parse_with_precedence(std::unique_ptr<Expression> left, int min_precedence);
 };

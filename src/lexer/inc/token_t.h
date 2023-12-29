@@ -10,6 +10,7 @@ typedef enum Token_t{
 
   //OPERATORS
   TOKEN_OPERATOR,
+  TOKEN_BRACKETS,
 } Token_t;
 
 char* token_to_string(Token_t type);
