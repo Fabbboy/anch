@@ -8,7 +8,7 @@
   TOKEN_HEX,
 
   TOKEN_OPERATOR,
-  TOKEN_BRACKETS
+  TOKEN_BRACKET
 } Token_t;
   */
 
@@ -50,6 +50,6 @@ void token_debug(Token *token);
 }
 
 [\(\)\[\]\{\}] {
-  APPEND(TOKEN_BRACKETS)
+  APPEND(TOKEN_BRACKET)
 }
 %%
